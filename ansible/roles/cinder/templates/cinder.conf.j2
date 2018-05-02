@@ -22,6 +22,7 @@ os_region_name = {{ openstack_region_name }}
 
 {% if cinder_enabled_backends %}
 enabled_backends = {{ cinder_enabled_backends|map(attribute='name')|join(',') }}
+storage_ip = {{ storage_interface_address }}
 {% endif %}
 
 {% if service_name == "cinder-backup" and enable_cinder_backup | bool %}
@@ -185,6 +186,24 @@ zfssa_initiator_group = {{ zfssa_iscsi_initiator_group }}
 zfssa_target_portal = {{ zfssa_iscsi_target_portal }}
 zfssa_target_interfaces = {{ zfssa_iscsi_target_interfaces }}
 {% endif %}
+
+
+{% if enable_cinder_backend_pds | bool %}
+[pds-1]
+volume_backend_name = pds
+volume_driver = cinder.volume.drivers.pds.pdsvolumedriver.PDSVolumeDriver
+rest_servers = {{ pds_mds_ips }}
+storage_pool = {{ pds_pool_name }}
+rest_timeout = 60
+rest_version = v1.1
+volume_copies = 2
+volume_type = thick
+clone_type = clone
+volume_io_type = standard
+username = {{ pds_username if pds_username else "admin" }}
+password = {{ pds_password if pds_password else "c3284d0f94606de1fd2af172aba15bf3" }}
+{% endif %}
+
 
 [privsep_entrypoint]
 helper_command=sudo cinder-rootwrap /etc/cinder/rootwrap.conf privsep-helper --config-file /etc/cinder/cinder.conf

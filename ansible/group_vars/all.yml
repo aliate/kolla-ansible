@@ -66,6 +66,8 @@ container_proxy:
 # By default, Kolla API services bind to the network address assigned
 # to the api_interface.  Allow the bind address to be an override.
 api_interface_address:  "{{ hostvars[inventory_hostname]['ansible_' + api_interface]['ipv4']['address'] }}"
+storage_interface_address:  "{{ hostvars[inventory_hostname]['ansible_' + storage_interface]['ipv4']['address'] }}"
+
 
 ################
 # Chrony options
@@ -395,6 +397,7 @@ enable_cinder_backend_iscsi: "{{ enable_cinder_backend_lvm | bool or enable_cind
 enable_cinder_backend_lvm: "no"
 enable_cinder_backend_nfs: "no"
 enable_cinder_backend_zfssa_iscsi: "no"
+enable_cinder_backend_pds: "no"
 enable_cloudkitty: "no"
 enable_congress: "no"
 enable_designate: "no"
@@ -749,3 +752,14 @@ use_preconfigured_databases: "no"
 # whether to use a common, preconfigured user
 # for all component databases
 use_common_mariadb_user: "no"
+
+
+#############################################
+# PDS configuration
+#############################################
+pds_mds_ips: ""
+pds_pool_name: ""
+pds_username: "admin"
+pds_password: "c3284d0f94606de1fd2af172aba15bf3"
+
+

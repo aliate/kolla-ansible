@@ -199,7 +199,8 @@ nova_scheduler_image: "{{ docker_registry ~ '/' if docker_registry else '' }}{{ 
 nova_scheduler_tag: "{{ nova_tag }}"
 nova_scheduler_image_full: "{{ nova_scheduler_image }}:{{ nova_scheduler_tag }}"
 
-nova_compute_image: "{{ docker_registry ~ '/' if docker_registry else '' }}{{ docker_namespace }}/{{ kolla_base_distro }}-{{ nova_install_type }}-nova-compute"
+#nova_compute_image: "{{ docker_registry ~ '/' if docker_registry else '' }}{{ docker_namespace }}/{{ kolla_base_distro }}-{{ nova_install_type }}-nova-compute"
+nova_compute_image: "{{ docker_registry ~ '/' if docker_registry else '' }}{{ docker_namespace }}/{{ kolla_base_distro }}-{{ nova_install_type }}-nova-compute{{ '-pds' if enable_cinder_backend_pds | bool else ''}}"
 nova_compute_tag: "{{ nova_tag }}"
 nova_compute_image_full: "{{ nova_compute_image }}:{{ nova_compute_tag }}"
 

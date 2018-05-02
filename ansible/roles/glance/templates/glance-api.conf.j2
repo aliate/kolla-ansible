@@ -19,6 +19,11 @@ cinder_catalog_info = volume:cinder:internalURL
 
 transport_url = {{ rpc_transport_url }}
 
+{% if enable_cinder_backend_pds | bool %}
+show_image_direct_url = True
+storage_ip = {{ storage_interface_address }}
+{% endif %}
+
 [database]
 connection = mysql+pymysql://{{ glance_database_user }}:{{ glance_database_password }}@{{ glance_database_address }}/{{ glance_database_name }}
 max_retries = -1

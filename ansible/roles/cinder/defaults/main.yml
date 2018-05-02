@@ -91,7 +91,9 @@ cinder_database_address: "{{ database_address }}:{{ database_port }}"
 cinder_install_type: "{{ kolla_install_type }}"
 cinder_tag: "{{ openstack_release }}"
 
-cinder_volume_image: "{{ docker_registry ~ '/' if docker_registry else '' }}{{ docker_namespace }}/{{ kolla_base_distro }}-{{ cinder_install_type }}-cinder-volume"
+# cinder_volume_image: "{{ docker_registry ~ '/' if docker_registry else '' }}{{ docker_namespace }}/{{ kolla_base_distro }}-{{ cinder_install_type }}-cinder-volume"
+cinder_volume_image: "{{ docker_registry ~ '/' if docker_registry else '' }}{{ docker_namespace }}/{{ kolla_base_distro }}-{{ cinder_install_type }}-cinder-volume{{ '-pds' if enable_cinder_backend_pds | bool else ''}}"
+
 cinder_volume_tag: "{{ cinder_tag }}"
 cinder_volume_image_full: "{{ cinder_volume_image }}:{{ cinder_volume_tag }}"
 
@@ -146,6 +148,9 @@ cinder_backends:
     enabled: "{{ cinder_backend_vmwarevc_vmdk | bool }}"
   - name: "zfssa-iscsi"
     enabled: "{{ enable_cinder_backend_zfssa_iscsi | bool }}"
+  - name: "pds-1"
+    enabled: "{{ enable_cinder_backend_pds | bool }}"
+
 
 cinder_enabled_backends: "{{ cinder_backends|selectattr('enabled', 'equalto', true)|list }}"
 cinder_iscsi_helper: "tgtadm"

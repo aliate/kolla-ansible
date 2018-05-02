@@ -42,6 +42,12 @@ compute_driver = libvirt.LibvirtDriver
 # Though my_ip is not used directly, lots of other variables use $my_ip
 my_ip = {{ api_interface_address }}
 
+{% if enable_cinder_backend_pds | bool %}
+block_device_allocate_retries = 600
+block_device_allocate_retries_interval = 6
+storage_ip = {{ storage_interface_address }}
+{% endif %}
+
 {% if enable_ceilometer | bool or enable_searchlight | bool or enable_designate | bool %}
 instance_usage_audit = True
 instance_usage_audit_period = hour
