@@ -19,9 +19,8 @@ cinder_catalog_info = volume:cinder:internalURL
 
 transport_url = {{ rpc_transport_url }}
 
-{% if enable_cinder_backend_pds | bool %}
+{% if enable_cinder | bool and glance_backend_pds | bool %}
 show_image_direct_url = True
-storage_ip = {{ storage_interface_address }}
 {% endif %}
 
 [database]
@@ -52,6 +51,8 @@ default_store = vsphere
 default_store = rbd
 {% elif enable_swift | bool and glance_backend_swift | bool %}
 default_store = swift+http
+{% elif enable_cinder | bool and glance_backend_pds | bool %}
+default_store = cinder
 {% else %}
 default_store = file
 filesystem_store_datadir = /var/lib/glance/images/
@@ -84,6 +85,14 @@ vmware_server_username = {{ vmware_vcenter_host_username }}
 vmware_server_password = {{ vmware_vcenter_host_password }}
 vmware_datastores = {{ vmware_vcenter_name }}:{{ vmware_datastore_name }}
 vmware_insecure = True
+{% endif %}
+
+{% if enable_cinder | bool and glance_backend_pds | bool %}
+storage_ip = {{ storage_interface_address }}
+cinder_catalog_info = volumev2::publicURL
+cinder_endpoint_template = "{{ public_protocol }}://{{ kolla_external_fqdn }}:{{ cinder_api_port }}/v2/%(tenant_id)s"
+cinder_http_retries = 3
+cinder_api_insecure = True
 {% endif %}
 
 [oslo_messaging_notifications]

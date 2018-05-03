@@ -293,6 +293,7 @@ kolla_internal_vip_address: "10.10.10.254"
 #glance_backend_ceph: "no"
 #glance_backend_vmware: "no"
 #glance_backend_swift: "no"
+#glance_backend_pds: "no"
 
 
 ##################
