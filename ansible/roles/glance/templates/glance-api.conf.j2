@@ -90,7 +90,7 @@ vmware_insecure = True
 {% if enable_cinder | bool and glance_backend_pds | bool %}
 storage_ip = {{ storage_interface_address }}
 cinder_catalog_info = volumev2::publicURL
-cinder_endpoint_template = "{{ public_protocol }}://{{ kolla_external_fqdn }}:{{ cinder_api_port }}/v2/%(tenant_id)s"
+cinder_endpoint_template = "{{ public_protocol }}://{{ kolla_external_fqdn }}:{{ cinder_api_port }}/v2/%(tenant)s"
 cinder_http_retries = 3
 cinder_api_insecure = True
 {% endif %}

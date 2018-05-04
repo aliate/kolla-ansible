@@ -6,6 +6,7 @@ glance_services:
     container_name: glance_api
     group: glance-api
     enabled: true
+    privileged: True
     image: "{{ glance_api_image_full }}"
     volumes:
       - "{{ node_config_directory }}/glance-api/:{{ container_config_directory }}/:ro"
@@ -13,6 +14,7 @@ glance_services:
       - "{{ glance_file_datadir_volume }}:/var/lib/glance/"
       - "{{ kolla_dev_repos_directory ~ '/glance/glance:/var/lib/kolla/venv/lib/python2.7/site-packages/glance' if glance_dev_mode | bool else '' }}"
       - "kolla_logs:/var/log/kolla/"
+      - "/dev/:/dev/"
   glance-registry:
     container_name: glance_registry
     group: glance-registry
